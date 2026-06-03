@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arbeitskleidung Bestellung</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --brand: #3B2F8F;
+    --brand-light: #EAE7F8;
+    --brand-mid: #534AB7;
+    --text: #1a1a2e;
+    --muted: #6b6b8a;
+    --border: #e2e0f0;
+    --bg: #f7f6fb;
+    --white: #ffffff;
+    --success: #1a7a4a;
+    --success-bg: #e6f5ed;
+    --error: #b91c1c;
+    --error-bg: #fef2f2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container { max-width: 620px; margin: 0 auto; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .header .logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px; height: 52px;
+    background: var(--brand);
+    border-radius: 14px;
+    margin-bottom: 1rem;
+  }
+  .header .logo svg { width: 28px; height: 28px; fill: white; }
+  .header h1 { font-size: 22px; font-weight: 600; color: var(--text); }
+  .header p { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; font-weight: 500; color: var(--text); }
+  .field input {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color .15s, box-shadow .15s;
+    outline: none;
+  }
+  .field input:focus {
+    border-color: var(--brand-mid);
+    box-shadow: 0 0 0 3px rgba(83,74,183,.12);
+  }
+
+  .items-section { margin-top: 1.5rem; }
+  .items-table { width: 100%; border-collapse: collapse; }
+  .items-table thead th {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: left;
+    padding: 0 10px 10px 0;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.04em;
+  }
+  .items-table thead th:last-child { padding-right: 0; }
+  .items-table tbody td {
+    padding: 10px 10px 10px 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .items-table tbody tr:last-child td { border-bottom: none; }
+  .item-name {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .item-icon {
+    width: 30px; height: 30px;
+    background: var(--brand-light);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .items-table input[type="number"] {
+    width: 72px;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    text-align: center;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .items-table input[type="number"]:focus {
+    border-color: var(--brand-mid);
+    box-shadow: 0 0 0 3px rgba(83,74,183,.12);
+  }
+
+  .items-table select {
+    width: 110px;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b6b8a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 28px;
+    transition: border-color .15s;
+  }
+  .items-table select:focus {
+    border-color: var(--brand-mid);
+    box-shadow: 0 0 0 3px rgba(83,74,183,.12);
+  }
+
+  .submit-btn {
+    width: 100%;
+    height: 46px;
+    background: var(--brand);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: background .15s, transform .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .submit-btn:hover { background: var(--brand-mid); }
+  .submit-btn:active { transform: scale(.98); }
+  .submit-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-top: 12px;
+    display: none;
+  }
+  .alert.success { background: var(--success-bg); color: var(--success); }
+  .alert.error { background: var(--error-bg); color: var(--error); }
+
+  .config-hint {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #92400e;
+    margin-bottom: 1.25rem;
+    display: flex;
+    gap: 10px;
+  }
+  .config-hint strong { font-weight: 600; }
+
+  @media (max-width: 480px) {
+    .name-grid { grid-template-columns: 1fr; }
+    .items-table thead th:nth-child(2), .items-table tbody td:nth-child(2) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.5 7.277L12 2 3.5 7.277v9.446L12 22l8.5-5.277V7.277zM12 4.228l6.5 4.035V15.74L12 19.772 5.5 15.74V8.263L12 4.228z"/>
+      </svg>
+    </div>
+    <h1>Arbeitskleidung bestellen</h1>
+    <p>Bitte füll das Formular vollständig aus.</p>
+  </div>
+
+  <div class="config-hint" id="config-hint">
+    <span>⚠️</span>
+    <span><strong>Setup erforderlich:</strong> Trag die Google Apps Script URL in der Datei ein (Zeile mit <code>SCRIPT_URL</code>).</span>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Deine Daten</div>
+    <div class="name-grid">
+      <div class="field"><label for="nachname">Nachname</label><input type="text" id="nachname" placeholder="Mustermann" autocomplete="family-name"></div>
+      <div class="field"><label for="vorname">Vorname</label><input type="text" id="vorname" placeholder="Max" autocomplete="given-name"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Kleidungsauswahl</div>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th style="min-width:120px">Artikel</th>
+          <th>Stückzahl</th>
+          <th>Größe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="item-name"><span class="item-icon">👕</span>T-Shirt</div></td>
+          <td><input type="number" id="tshirt-qty" min="0" value="0"></td>
+          <td>
+            <select id="tshirt-size">
+              <option value="">— Größe</option>
+              <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><div class="item-name"><span class="item-icon">👖</span>Hose</div></td>
+          <td><input type="number" id="hose-qty" min="0" value="0"></td>
+          <td>
+            <select id="hose-size">
+              <option value="">— Größe</option>
+              <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><div class="item-name"><span class="item-icon">🧥</span>Jacke</div></td>
+          <td><input type="number" id="jacke-qty" min="0" value="0"></td>
+          <td>
+            <select id="jacke-size">
+              <option value="">— Größe</option>
+              <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="submit-btn" onclick="submitOrder()" id="submit-btn">
+      <div class="spinner" id="spinner"></div>
+      <span id="btn-text">Bestellung absenden</span>
+    </button>
+    <div class="alert success" id="alert-success">✓ Deine Bestellung wurde erfolgreich übermittelt!</div>
+    <div class="alert error" id="alert-error">✗ Fehler beim Senden. Bitte versuche es erneut.</div>
+  </div>
+
+</div>
+
+<script>
+  // ↓↓↓ HIER die Google Apps Script URL eintragen ↓↓↓
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEQHWKiHocoVC0MsNMKWxQhX5ErSNes9gRabxMfElqJ0rWZtUdqUUOHFPK5D1odOCz/exec";
+  // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
+  if (SCRIPT_URL !== "DEINE_SCRIPT_URL_HIER") {
+    document.getElementById('config-hint').style.display = 'none';
+  }
+
+  async function submitOrder() {
+    const nachname = document.getElementById('nachname').value.trim();
+    const vorname = document.getElementById('vorname').value.trim();
+    if (!nachname || !vorname) { showAlert('error', '✗ Bitte Vor- und Nachname eintragen.'); return; }
+
+    const items = [
+      { artikel: 'T-Shirt', menge: parseInt(document.getElementById('tshirt-qty').value)||0, groesse: document.getElementById('tshirt-size').value },
+      { artikel: 'Hose', menge: parseInt(document.getElementById('hose-qty').value)||0, groesse: document.getElementById('hose-size').value },
+      { artikel: 'Jacke', menge: parseInt(document.getElementById('jacke-qty').value)||0, groesse: document.getElementById('jacke-size').value },
+    ].filter(i => i.menge > 0);
+
+    if (items.length === 0) { showAlert('error', '✗ Bitte mindestens einen Artikel mit Stückzahl eintragen.'); return; }
+    const missingSize = items.find(i => !i.groesse);
+    if (missingSize) { showAlert('error', `✗ Bitte für "${missingSize.artikel}" eine Größe auswählen.`); return; }
+
+    if (SCRIPT_URL === "DEINE_SCRIPT_URL_HIER") {
+      showAlert('error', '✗ Noch keine Script-URL konfiguriert. Bitte Setup-Anleitung befolgen.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nachname, vorname, items, datum: new Date().toLocaleDateString('de-DE') })
+      });
+      showAlert('success', '✓ Deine Bestellung wurde erfolgreich übermittelt!');
+      resetForm();
+    } catch(e) {
+      showAlert('error', '✗ Fehler beim Senden. Bitte versuche es erneut.');
+    }
+    setLoading(false);
+  }
+
+  function setLoading(on) {
+    document.getElementById('submit-btn').disabled = on;
+    document.getElementById('spinner').style.display = on ? 'block' : 'none';
+    document.getElementById('btn-text').textContent = on ? 'Wird gesendet...' : 'Bestellung absenden';
+  }
+
+  function showAlert(type, msg) {
+    ['success','error'].forEach(t => {
+      const el = document.getElementById('alert-' + t);
+      el.style.display = 'none';
+    });
+    const el = document.getElementById('alert-' + type);
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function resetForm() {
+    ['nachname','vorname'].forEach(id => document.getElementById(id).value = '');
+    ['tshirt','hose','jacke'].forEach(id => {
+      document.getElementById(id+'-qty').value = 0;
+      document.getElementById(id+'-size').value = '';
+    });
+  }
+</script>
+</body>
+</html>
